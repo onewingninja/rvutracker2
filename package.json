@@ -1,0 +1,19 @@
+{
+  "name": "lineapp",
+  "version": "1.0.0",
+  "description": "An app that virtually reserves spots in lines",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "lineapp"
+  },
+  "keywords": [
+    "line",
+    "reserve"
+  ],
+  "author": "Saurav Kumar Joshi",
+  "license": "GPL-3.0"
+}
