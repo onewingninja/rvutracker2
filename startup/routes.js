@@ -1,6 +1,9 @@
 
+const express = import('express');
 const logger = require('../middleware/logger.js');
+const users = require('../routes/users');
 
 module.exports = function(app){
-    const port = process.env.PORT || 3000;
-    app.listen(port, ()=> logger.info(`Listening on port ${port}`));}
+    app.use(express.json());
+    app.use('/api/users', users);
+}

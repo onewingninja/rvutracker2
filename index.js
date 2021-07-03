@@ -1,17 +1,21 @@
 
-require('express-async-errors');
-const express = require('express');
+import('express-async-errors');
+const express = import('express');
 const app = express();
 
-const mongoose = require('mongoose');
-const config = require('config');
+const mongoose = import('mongoose');
+const config = import('config');
 const logger = require('./middleware/logger.js');
+//const users = require('./routes/users.js');
 const routes = require('./startup/routes.js');
-const database = require('./startup/database.js');;
+const database = require('./startup/database.js');
 
 logger.info(config.get('name'));
 
-app.use(express.json());
+//app.use(express.json());
+app.use(routes)(app)
+//app.use(database)();
+//app.use('/api/users', users);
 
 mongoose.connect(config.get('mongodb.url'))
 .then(() => 
