@@ -4,5 +4,10 @@
         "url" : "mongodb://localhost/lineapp",
         "loggingUrl": "mongodb://localhost/lineapp-log"
     },
-    "jwtPrivateKey": "12345"
+    "jwtPrivateKey": "12345",
+    "mail": {
+        "service": "gmail",
+        "username": "lineapp@gmail.com",
+        "password": "1234"
+    }
 }

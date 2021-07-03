@@ -1,7 +1,7 @@
 
-const Joi = require('joi');
-const { trim } = require('lodash');
-const mongoose = require('mongoose');
+const Joi = import('joi');
+const Jpc = import('joi-password-complexity');
+const mongoose = import('mongoose');
 
 exports.User = mongoose.model('User', new mongoose.Schema({
     username: {
@@ -38,12 +38,29 @@ exports.User = mongoose.model('User', new mongoose.Schema({
     }
 }));
 
-exports.validateUser = function(user){
+exports.validateUser = async function(user){
     const schema = {
         username: Joi.string().min(5).max(50).pattern("[ -~]").required(),
         name: Joi.string().min(1).max(50).pattern("[ -~]").required(),
         email: Joi.string().min(1).max(225).pattern("[ -~]").email().required(),
-        password: Joi.string().min(5).max(255).pattern("[ -~]").required()
+        password: Joi.string().min(1).max(255).pattern("[ -~]").required()
     }
-    return Joi.validate(user, schema);
+
+    const {error} = Joi.validate(user, schema);
+    if (error) return error;
+
+    const passwordSchema = {
+        min: 8,
+        max: 255,
+        lowerCase: 1,
+        upperCase: 1,
+        numeric: 1,
+        symbol: 1,
+        requirementCount: 4
+    };
+
+    {error} Jpc(passwordSchema, "Password").validate(user.password);
+    if (error) return error;
+
+    return;
 }

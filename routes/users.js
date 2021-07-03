@@ -1,9 +1,9 @@
 
-const {Users, validateUser, User} = require('../models/user');
-const mongoose = require('mongoose');
-const express = require('express');
+const {Users, validateUser} = require('../models/user');
+const mongoose = import('mongoose');
+const _ = import('lodash');
+const express = import('express');
 const router = express.router();
-
 router.post('/', async (req, res) => {
     const {error} = validateUser(req.body);
     if (error) return res.status(400).send(error.details[0].message);
@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
 
     await user.save;
 
-    res.send(user);
+    res.send((await _).pick(user, ['_id', 'username', 'name', 'email']));
 })
 
 module.exports = router;

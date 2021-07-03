@@ -1,4 +1,6 @@
 {
-    "jwtPrivateKey": "LineApp-jwtPrivateKey"
-    
+    "jwtPrivateKey": "LineApp-jwtPrivateKey",
+    "mail": {
+        "password": "LineApp-mail-password"
+    }
 }
