@@ -4,7 +4,7 @@
   "description": "An app that virtually reserves spots in lines",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --watchAll --verbose --coverage"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,22 @@
     "reserve"
   ],
   "author": "Saurav Kumar Joshi",
-  "license": "GPL-3.0"
+  "license": "GPL-3.0",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "config": "^3.3.6",
+    "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
+    "joi": "^17.4.0",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "mongoose": "^5.13.0",
+    "npm": "^7.19.1",
+    "winston": "^3.3.3",
+    "winston-mongodb": "^5.0.7"
+  },
+  "devDependencies": {
+    "jest": "^27.0.6",
+    "jshint": "^2.13.0"
+  }
 }

@@ -1,0 +1,9 @@
+{
+    "name": "LineApp",
+    "mongodb":{
+        "url" : "mongodb://localhost/lineapp",
+        "loggingUrl": "mongodb://localhost/lineapp-log"
+    },
+    "jwtPrivateKey": "",
+    "logfile": "logfile.log"
+}

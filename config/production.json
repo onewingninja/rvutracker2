@@ -1,0 +1,8 @@
+{
+    "name": "LineApp-Production",
+    "mongodb":{
+        "url" : "",
+        "loggingUrl": ""
+    },
+    "jwtPrivateKey": ""
+}
