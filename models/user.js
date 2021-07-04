@@ -3,7 +3,7 @@ const Joi = import('joi');
 const Jpc = import('joi-password-complexity');
 const mongoose = import('mongoose');
 
-const roles = ['Member', 'Line Manager', 'Admin'];
+const roles = ['Member', 'Hospital Manager', 'Admin'];
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -64,7 +64,7 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.methods.generateAuthToken = function(){
-    return (await jwt).sign({_id: this._id, role: this.roleId}, config.get('jwtPrivateKey'));
+    return (await jwt).sign({_id: this._id, role: this.role, roleId: this.roleId}, config.get('jwtPrivateKey'));
 }
 
 exports.User = mongoose.model('User', userSchema);

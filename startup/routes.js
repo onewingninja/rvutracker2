@@ -6,6 +6,7 @@ const users = require('../routes/users.js');
 const emailVerifier = require('../routes/emailVerification.js');
 const auth = require('../routes/auth.js');
 const account = require('../routes/account.js');
+const hospitalAccount = require('../routes/hospitalAccount.js');
 
 module.exports = function(app){
     app.use(express.json());
@@ -14,4 +15,5 @@ module.exports = function(app){
     app.use('/api/email-verifier/', emailVerifier);
     app.use('/api/auth', auth);
     app.use('/api/account', account);
+    app.use('/api/hospital-account', hospitalAccount);
 }
