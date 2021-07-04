@@ -24,9 +24,14 @@ module.exports = function(req){
         someone may have mistyped and accidentally entered your email.`
     };
 
-    transporter.sendMail(mailSchema, (err, info) => {
-        if (err) logger.error(err)
-    });
+    try{
+        transporter.sendMail(mailSchema, (err, info) => {
+            if (err) throw err;
+        });
+    }
+    catch(err){
+        next(err);
+    }
     
     function verifiedSuccess() {resolve(code)}
 

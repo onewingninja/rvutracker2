@@ -1,4 +1,5 @@
 
+const { Hospital } = require('./hospital');
 const Joi = import('joi');
 const Jpc = import('joi-password-complexity');
 const mongoose = import('mongoose');
@@ -56,6 +57,13 @@ const userSchema = new mongoose.Schema({
                 }
             i++;
         }}
+    },
+    rvu: {
+        type: Number,
+        default: 0
+    },
+    hospital: {
+        enum: Hospital.find().select('Name')
     },
     settings: {
         type: Object,
