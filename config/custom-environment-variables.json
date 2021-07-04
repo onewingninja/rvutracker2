@@ -1,6 +1,6 @@
 {
-    "jwtPrivateKey": "LineApp-jwtPrivateKey",
+    "jwtPrivateKey": "RvuTracker-jwtPrivateKey",
     "mail": {
-        "password": "LineApp-mail-password"
+        "password": "RvuTracker-mail-password"
     }
 }

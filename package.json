@@ -1,18 +1,20 @@
 {
-  "name": "lineapp",
+  "name": "rvutracker",
   "version": "1.0.0",
-  "description": "An app that virtually reserves spots in lines",
+  "description": "Tracks RVU",
   "main": "index.js",
   "scripts": {
     "test": "jest --watchAll --verbose --coverage"
   },
   "repository": {
     "type": "git",
-    "url": "lineapp"
+    "url": "rvutracker"
   },
   "keywords": [
-    "line",
-    "reserve"
+    "rvu",
+    "tracker",
+    "relative value unit",
+    "physicians"
   ],
   "author": "Saurav Kumar Joshi",
   "license": "GPL-3.0",

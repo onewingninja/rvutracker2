@@ -1,5 +1,5 @@
 {
-    "name": "LineApp-Production",
+    "name": "RvuTracker-Production",
     "mongodb":{
         "url" : "",
         "loggingUrl": ""

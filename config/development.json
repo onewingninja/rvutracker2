@@ -1,14 +1,14 @@
 {
-    "name": "LineApp-Development",
+    "name": "RvuTracker-Development",
     "mongodb":{
-        "url" : "mongodb://localhost/lineapp",
-        "loggingUrl": "mongodb://localhost/lineapp-log"
+        "url" : "mongodb://localhost/RvuTracker",
+        "loggingUrl": "mongodb://localhost/RvuTracker-log"
     },
     "jwtPrivateKey": "12345",
     "jwtHeader": "x-auth-token",
     "mail": {
         "service": "gmail",
-        "username": "lineapp@gmail.com",
+        "username": "RvuTracker@gmail.com",
         "password": "1234"
     }
 }
