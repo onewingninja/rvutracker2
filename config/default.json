@@ -5,6 +5,7 @@
         "loggingUrl": "mongodb://localhost/lineapp-log"
     },
     "jwtPrivateKey": "",
+    "jwtHeader": "x-auth-token",
     "logfile": "logfile.log",
     "mail": {
         "service": "gmail",

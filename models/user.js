@@ -3,7 +3,7 @@ const Joi = import('joi');
 const Jpc = import('joi-password-complexity');
 const mongoose = import('mongoose');
 
-exports.User = mongoose.model('User', new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
@@ -35,15 +35,25 @@ exports.User = mongoose.model('User', new mongoose.Schema({
         match: "[ -~]",
         minLength: 1,
         maxLength: 1024,
+    },
+    settings: {
+        type: Object,
+        required: false,
     }
-}));
+});
+
+userSchema.methods.generateAuthToken = function(){
+    return (await jwt).sign({_id: this._id}, config.get('jwtPrivateKey'));
+}
+
+exports.User = mongoose.model('User', userSchema);
 
 exports.validateUser = async function(user){
     const schema = {
         username: Joi.string().min(5).max(50).pattern("[ -~]").required(),
         name: Joi.string().min(1).max(50).pattern("[ -~]").required(),
         email: Joi.string().min(1).max(225).pattern("[ -~]").email().required(),
-        password: Joi.string().min(1).max(255).pattern("[ -~]").required()
+        password: Joi.string().min(1).max(255).pattern("[a-zA-Z0-9]").required()
     }
 
     const {error} = Joi.validate(user, schema);

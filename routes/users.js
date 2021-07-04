@@ -1,8 +1,11 @@
 
-const {Users, validateUser} = require('../models/user.js');
+const {User, validateUser} = require('../models/user.js');
 const emailVerifier = require('../middleware/emailVerifier.js');
 const mongoose = import('mongoose');
 const _ = import('lodash');
+const bcrypt = import('bcrypt');
+const jwt = import('jsonwebtoken');
+const config = import('config');
 const express = import('express');
 const router = express.router();
 
@@ -20,16 +23,16 @@ router.post('/', async (req, res) => {
     
     if (!verified) return res.status(408).send("Verification code timed out, not sent in time.");
 
-    user = new User({
-        username: req.body.username,
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password
-    });
+    user = new User((await _)
+    .pick(req.body, ['username', 'name', 'email', 'password']));
 
-    await user.save;
+    const salt = await bcrypt.genSalt(10);
+    user.password = (await bcrypt).hash(user.password, salt);
 
-    res.send((await _).pick(user, ['_id', 'username', 'name', 'email']));
-})
+    await user.save();
+
+    const token = user.generateAuthToken();
+    res.header(config.get('jwtHeader'), token).send((await _).pick(user, ['_id', 'username', 'name', 'email']));
+});
 
 module.exports = router;

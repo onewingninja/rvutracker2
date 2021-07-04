@@ -4,5 +4,11 @@
         "url" : "",
         "loggingUrl": ""
     },
-    "jwtPrivateKey": ""
+    "jwtPrivateKey": "",
+    "jwtHeader": "",
+    "mail": {
+        "service": "",
+        "username": "",
+        "password": ""
+    }
 }
