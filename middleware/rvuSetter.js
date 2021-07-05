@@ -1,4 +1,4 @@
 
-module.exports = function(task, hospital){
+module.exports = function(task, hospitalId){
     
 }

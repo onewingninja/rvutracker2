@@ -12,7 +12,7 @@ module.exports = function(app){
     app.use(express.json());
     app.use('/api/home', home);
     app.use('/api/users', users);
-    app.use('/api/email-verifier/', emailVerifier);
+    app.use('/api/email-verifier', emailVerifier);
     app.use('/api/auth', auth);
     app.use('/api/account', account);
     app.use('/api/hospital-account', hospitalAccount);

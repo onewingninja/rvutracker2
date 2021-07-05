@@ -12,6 +12,12 @@ exports.Hospital = mongoose.model('Hospital', new mongoose.Schema({
     admin: mongoose.Schema.Types.ObjectId,
     members: [String],
     rvuSettings: Object,
+    updateTime: {
+        default: new Date().now
+    },
+    creationTime: {
+        default: new Date().now
+    },
     settings: Object
 }));
 

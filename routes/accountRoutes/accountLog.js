@@ -21,7 +21,7 @@ const getSchema = {
         isIncludingInactive: Joi.boolean()
 })};
 
-router.get('/:id', [authentication, validate(getSchema)], (req, res) => {
+router.get('/:id', [authentication, validate(getSchema)], async (req, res) => {
 
     validationError(schema.validate(req.query));
     
@@ -46,7 +46,7 @@ router.get('/:id', [authentication, validate(getSchema)], (req, res) => {
     res.send(logs);
 });
 
-router.post('/', authentication, (req, res) => {
+router.post('/', authentication, async (req, res) => {
     validationError(validateLog(req.body));
 
     const user = await User.findById(req.user._id);
@@ -57,7 +57,7 @@ router.post('/', authentication, (req, res) => {
     res.send(log);
 });
 
-router.put('/:id', authentication, (req, res) => {
+router.put('/:id', authentication, async (req, res) => {
     validationError(validateLog(req.body));
 
     const user = await User.findById(req.user._id);
@@ -73,18 +73,22 @@ router.put('/:id', authentication, (req, res) => {
     updatedLog.time = originalDate;
 
     
-
-    new Fawn.Task()
-        .save('users', user)
+    try{
+        new Fawn.Task()
+        .save(user)
         .then(() => {
-            await user.logs.push(updatedLog);
+            user.logs.push(updatedLog);
         })
         .run();
+    }
+    catch(ex){
+        next(ex);
+    }
     
     res.send(updatedLog);
 });
 
-router.delete('/:id', authentication, (req, res) => {
+router.delete('/:id', authentication, async (req, res) => {
     const user = await User.findById(req.user._id);
     const log = await user.logs.findByIdAndUpdate(req.params.id, {
         $set: {
