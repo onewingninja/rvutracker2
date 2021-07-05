@@ -1,6 +1,5 @@
 
 const Joi = import('joi');
-const JoiValidation = require('../../middleware/JoiValidation.js');
 const { Log, validateLog } = require('../../models/log.js');
 const { User } = require('../../models/user.js');
 const authentication = require('../middleware/authentication.js');
@@ -19,9 +18,9 @@ router.get('/:id', authentication, (req, res) => {
         sortDirection: Joi.valid(1, 0)
     });
 
-    const {error} = await JoiValidation(req.query, schema);
-    if (error) 
-
+    const {error} = schema.validate(req.query);
+    if (error) return res.status(400).send(error.details[0].message);
+    
     const user = await User.findById(req.user._id);
 
     const zoom = 50 || req.query.zoom;
@@ -32,15 +31,15 @@ router.get('/:id', authentication, (req, res) => {
 
     const skip = (req.params.id - 1) * zoom
 
-    user.logs.find()
+    const logs = user.logs.find()
     .skip(skip)
     .limit(zoom)
-    .sort({sortBy: sortDirection})
+    .sort({sortBy: sortDirection});
 
-    res.send()
-})
+    res.send(logs);
+});
 
-router.post('/add', authentication, (req, res) => {
+router.post('/', authentication, (req, res) => {
     const {error} = validateLog(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
@@ -50,5 +49,16 @@ router.post('/add', authentication, (req, res) => {
 
     res.send(log);
 });
+
+router.put('/:id', authentication, (req, res) => {
+    const {error} = validateLog(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+
+    const user = await User.findById(req.user._id);
+
+    const log = await user.logs.findById(req.params.id)
+
+    const Date = log.time;
+})
 
 module.exports = router;

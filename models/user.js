@@ -1,5 +1,4 @@
 
-const JoiValidation = require('../middleware/JoiValidation');
 const { Hospital } = require('./hospital');
 const { logSchema } = require('./log');
 const Joi = import('joi');
@@ -88,7 +87,7 @@ exports.validateUser = async function(user){
         password: Joi.string().min(1).max(255).pattern("[a-zA-Z0-9]").required()
     });
 
-    const {error} = JoiValidation(user, schema);
+    const {error} = schema.validate(user);
     if (error) return error;
 
     const passwordSchema = {
