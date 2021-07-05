@@ -1,4 +1,5 @@
 
+const validationError = require('../../middleware/validationError.js');
 const { Log, validateLog } = require('../../models/log.js');
 const { User } = require('../../models/user.js');
 const authentication = require('../middleware/authentication.js');
@@ -20,10 +21,9 @@ const getSchema = {
         isIncludingInactive: Joi.boolean()
 })};
 
-router.get('/:id', [validate(getSchema),authentication], (req, res) => {
+router.get('/:id', [authentication, validate(getSchema)], (req, res) => {
 
-    const {error} = schema.validate(req.query);
-    if (error) return res.status(400).send(error.details[0].message);
+    validationError(schema.validate(req.query));
     
     const user = await User.findById(req.user._id);
 
@@ -47,8 +47,7 @@ router.get('/:id', [validate(getSchema),authentication], (req, res) => {
 });
 
 router.post('/', authentication, (req, res) => {
-    const {error} = validateLog(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
+    validationError(validateLog(req.body));
 
     const user = await User.findById(req.user._id);
 
@@ -59,8 +58,7 @@ router.post('/', authentication, (req, res) => {
 });
 
 router.put('/:id', authentication, (req, res) => {
-    const {error} = validateLog(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
+    validationError(validateLog(req.body));
 
     const user = await User.findById(req.user._id);
 

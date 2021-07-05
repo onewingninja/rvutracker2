@@ -64,6 +64,9 @@ const userSchema = new mongoose.Schema({
         default: 0
     },
     logs: [logSchema],
+    hospitals_id: {
+        enum: [Hospital.find().select('_id')]
+    },
     hospitals: {
         enum: [Hospital.find().select('Name')]
     },
@@ -81,10 +84,10 @@ exports.User = mongoose.model('User', userSchema);
 
 exports.validateUser = async function(user){
     const schema = Joi.object({
-        username: Joi.string().min(5).max(50).pattern("[ -~]").required(),
-        name: Joi.string().min(1).max(50).pattern("[ -~]").required(),
-        email: Joi.string().min(1).max(225).pattern("[ -~]").email().required(),
-        password: Joi.string().min(1).max(255).pattern("[a-zA-Z0-9]").required()
+        username: Joi.string().min(5).max(50).pattern(/[ -~]/).required(),
+        name: Joi.string().min(1).max(50).pattern(/[ -~]/).required(),
+        email: Joi.string().min(1).max(225).pattern(/[ -~]/).email().required(),
+        password: Joi.string().min(1).max(255).pattern(/[a-zA-Z0-9]/).required()
     });
 
     const {error} = schema.validate(user);
