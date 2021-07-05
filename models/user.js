@@ -1,5 +1,6 @@
 
 const { Hospital } = require('./hospital');
+const { logSchema } = require('./log');
 const Joi = import('joi');
 const Jpc = import('joi-password-complexity');
 const mongoose = import('mongoose');
@@ -62,8 +63,8 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    log: [Object],
-    hospital: {
+    logs: [logSchema],
+    hospitals: {
         enum: [Hospital.find().select('Name')]
     },
     settings: {

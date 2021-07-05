@@ -2,7 +2,7 @@
 const Joi = import('joi');
 const mongoose = import('mongoose');
 
-exports.Log = mongoose.model('Log', new mongoose.Schema({
+exports.logSchema = new mongoose.Schema({
     rvu: Number,
     task: {
         type: String,
@@ -14,8 +14,13 @@ exports.Log = mongoose.model('Log', new mongoose.Schema({
         type: String,
         minLength: 0,
         maxLength: 1024
+    },
+    time: {
+        default: new Date().now
     }
-}));
+});
+
+exports.Log = mongoose.model('Log', this.logSchema);
 
 exports.validateLog = function(log){
     const schema = {
