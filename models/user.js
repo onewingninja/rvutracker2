@@ -68,7 +68,7 @@ const userSchema = new mongoose.Schema({
         enum: [Hospital.find().select('_id')]
     },
     hospitals: {
-        enum: [Hospital.find().select('Name')]
+        enum: [Hospital.find().select('name')]
     },
     settings: {
         type: Object,

@@ -1,4 +1,5 @@
 
+const logAuth = require('../../middleware/logAuth.js');
 const validationError = require('../../middleware/validationError.js');
 const { Log, validateLog } = require('../../models/log.js');
 const { User } = require('../../models/user.js');
@@ -51,8 +52,10 @@ router.post('/', authentication, async (req, res) => {
 
     const user = await User.findById(req.user._id);
 
+    validationError(logAuth(req.body.hospital, user));
+
     const log = user.logs.push(new Log((await _)
-        .pick(req.body, ['rvuReq', 'task', 'description'])));
+        .pick(req.body, ['rvuReq', 'task', 'description', 'hospital'])));
 
     res.send(log);
 });

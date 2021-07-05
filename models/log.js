@@ -1,3 +1,4 @@
+const { Hospital } = require('./hospital');
 
 const Joi = import('express-validation');
 const mongoose = import('mongoose');
@@ -5,6 +6,18 @@ const mongoose = import('mongoose');
 exports.logSchema = new mongoose.Schema({
     rvu: Number,
     rvuReq: Number,
+    hospitalId: {
+        type: Hospital.find().select('_id'),
+        required: true
+    },
+    hospitalName: {
+        type: Hospital.find().select('name'),
+        default: function(){
+            Hospital.find({
+                _id: this.hospitalId})
+                .select('name');
+        }
+    },
     status: {
         enum: ['pending', 'verified', 'denied', 'inactive'],
         default: 'pending'
@@ -31,6 +44,7 @@ exports.Log = mongoose.model('Log', this.logSchema);
 
 exports.validateLog = function(log){
     const schema = Joi.object({
+        hospital: Joi.valid(Hospital.find().select('name')),
         rvuReq: Joi.number().min(0),
         task: Joi.string().min(1).max(50).required(),
         description: Joi.string().min(0).max(1024)
