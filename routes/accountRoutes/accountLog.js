@@ -1,5 +1,6 @@
 
 const Joi = import('joi');
+const JoiValidation = require('../../middleware/JoiValidation.js');
 const { Log, validateLog } = require('../../models/log.js');
 const { User } = require('../../models/user.js');
 const authentication = require('../middleware/authentication.js');
@@ -12,9 +13,15 @@ router.get('/', authentication, (req, res) => {
 
 router.get('/:id', authentication, (req, res) => {
 
-    const schema = {
-        zoom: 
-    }
+    const schema = Joi.object({
+        zoom: Joi.number().min(0).max(1024),
+        sortBy: Joi.valid('time', 'rvu'),
+        sortDirection: Joi.valid(1, 0)
+    });
+
+    const {error} = await JoiValidation(req.query, schema);
+    if (error) 
+
     const user = await User.findById(req.user._id);
 
     const zoom = 50 || req.query.zoom;

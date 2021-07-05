@@ -1,4 +1,5 @@
 
+const JoiValidation = require('../middleware/JoiValidation');
 const { Hospital } = require('./hospital');
 const { logSchema } = require('./log');
 const Joi = import('joi');
@@ -80,14 +81,14 @@ userSchema.methods.generateAuthToken = function(){
 exports.User = mongoose.model('User', userSchema);
 
 exports.validateUser = async function(user){
-    const schema = {
+    const schema = Joi.object({
         username: Joi.string().min(5).max(50).pattern("[ -~]").required(),
         name: Joi.string().min(1).max(50).pattern("[ -~]").required(),
         email: Joi.string().min(1).max(225).pattern("[ -~]").email().required(),
         password: Joi.string().min(1).max(255).pattern("[a-zA-Z0-9]").required()
-    }
+    });
 
-    const {error} = Joi.validate(user, schema);
+    const {error} = JoiValidation(user, schema);
     if (error) return error;
 
     const passwordSchema = {

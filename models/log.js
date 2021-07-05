@@ -1,3 +1,4 @@
+const JoiValidation = require('../middleware/JoiValidation');
 
 const Joi = import('joi');
 const mongoose = import('mongoose');
@@ -23,11 +24,11 @@ exports.logSchema = new mongoose.Schema({
 exports.Log = mongoose.model('Log', this.logSchema);
 
 exports.validateLog = function(log){
-    const schema = {
+    const schema = Joi.object({
         rvu: Joi.number().min(0),
         task: Joi.string().min(1).max(50).required(),
         description: Joi.string().min(0).max(1024)
-    }
+    });
 
-    return Joi.validate(log, schema);
+    return JoiValidation(log, schema);
 }
