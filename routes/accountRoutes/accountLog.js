@@ -3,6 +3,8 @@ const Joi = import('joi');
 const { Log, validateLog } = require('../../models/log.js');
 const { User } = require('../../models/user.js');
 const authentication = require('../middleware/authentication.js');
+const _ = import('lodash');
+const Fawn = import('fawn');
 const express = import('express');
 const router = express.router();
 
@@ -45,7 +47,8 @@ router.post('/', authentication, (req, res) => {
 
     const user = await User.findById(req.user._id);
 
-    const log = user.logs.push(new Log(req.body));
+    const log = user.logs.push(new Log((await _)
+        .pick(req.body, ['rvuReq', 'task', 'description'])));
 
     res.send(log);
 });
@@ -56,9 +59,25 @@ router.put('/:id', authentication, (req, res) => {
 
     const user = await User.findById(req.user._id);
 
-    const log = await user.logs.findById(req.params.id)
+    const log = await user.logs.findById(req.params.id);
 
-    const Date = log.time;
+    const originalDate = log.time;
+    log.closedTime = new Date().now;
+
+    const updatedLog = new Log((await _)
+        .pick(req.body, ['rvuReq', 'task', 'description']));
+    updatedLog.time = originalDate;
+
+    
+
+    new Fawn.Task()
+        .save('users', user)
+        .then(() => {
+            await user.logs.push(updatedLog);
+        })
+        .run();
+    
+    res.send(updatedLog);
 })
 
 module.exports = router;
