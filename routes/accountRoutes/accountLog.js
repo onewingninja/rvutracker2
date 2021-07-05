@@ -78,6 +78,8 @@ router.put('/:id', authentication, (req, res) => {
         .run();
     
     res.send(updatedLog);
-})
+});
+
+router.delete('/:id', authentication,)
 
 module.exports = router;
