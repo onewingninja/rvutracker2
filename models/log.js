@@ -1,5 +1,5 @@
 
-const Joi = import('joi');
+const Joi = import('express-validation');
 const mongoose = import('mongoose');
 
 exports.logSchema = new mongoose.Schema({

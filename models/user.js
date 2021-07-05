@@ -1,7 +1,7 @@
 
 const { Hospital } = require('./hospital');
 const { logSchema } = require('./log');
-const Joi = import('joi');
+const {Joi} = import('express-validation');
 const Jpc = import('joi-password-complexity');
 const mongoose = import('mongoose');
 
