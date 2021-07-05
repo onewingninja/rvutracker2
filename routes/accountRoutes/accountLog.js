@@ -16,7 +16,8 @@ const getSchema = {
     query: Joi.object({
         zoom: Joi.number().min(0).max(1024),
         sortBy: Joi.valid('time', 'rvu'),
-        sortDirection: Joi.valid(1, 0)
+        sortDirection: Joi.valid(1, 0),
+        isIncludingInactive: Joi.boolean()
 })};
 
 router.get('/:id', [validate(getSchema),authentication], (req, res) => {
@@ -32,13 +33,16 @@ router.get('/:id', [validate(getSchema),authentication], (req, res) => {
 
     const sortDirection = 1 || req.query.sortDirection;
 
+    const isIncludingInactive = false || req.query.isIncludingInactive;
+    if (isIncludingInactive)
+
     const skip = (req.params.id - 1) * zoom
 
-    const logs = user.logs.find()
-    .skip(skip)
-    .limit(zoom)
-    .sort({sortBy: sortDirection});
-
+    const logs = user.logs.find({status: {$ne: 
+        (isIncludingInactive) ? 'random1234567890' : 'inactive'}})
+        .skip(skip)
+        .limit(zoom)
+        .sort({sortBy: sortDirection});
     res.send(logs);
 });
 
@@ -61,6 +65,7 @@ router.put('/:id', authentication, (req, res) => {
     const user = await User.findById(req.user._id);
 
     const log = await user.logs.findById(req.params.id);
+    if (!log) res.status(404).send("Log not found");
 
     const originalDate = log.time;
     log.closedTime = new Date().now;
@@ -83,7 +88,14 @@ router.put('/:id', authentication, (req, res) => {
 
 router.delete('/:id', authentication, (req, res) => {
     const user = await User.findById(req.user._id);
-    
-})
+    const log = await user.logs.findByIdAndUpdate(req.params.id, {
+        $set: {
+            status: 'inactive',
+            closedTime: new Date().now
+        }
+    });
+
+    res.send(log);
+});
 
 module.exports = router;

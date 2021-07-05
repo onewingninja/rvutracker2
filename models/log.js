@@ -6,7 +6,7 @@ exports.logSchema = new mongoose.Schema({
     rvu: Number,
     rvuReq: Number,
     status: {
-        enum: ['pending', 'verified', 'denied'],
+        enum: ['pending', 'verified', 'denied', 'inactive'],
         default: 'pending'
     },
     task: {
