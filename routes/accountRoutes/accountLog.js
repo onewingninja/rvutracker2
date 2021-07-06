@@ -78,10 +78,13 @@ router.put('/:id', authentication, async (req, res) => {
     
     try{
         new Fawn.Task()
-        .save(user)
         .then(() => {
             user.logs.push(updatedLog);
         })
+        .then(() => {
+            
+        })
+        .save(user)
         .run();
     }
     catch(ex){
