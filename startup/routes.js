@@ -12,6 +12,7 @@ const hospitalAccount = require('../routes/hospitalAccount.js');
 module.exports = function(app){
     app.use(helmet());
     app.use(express.json());
+    app.use(express.urlEncoded());
     app.use('/api/home', home);
     app.use('/api/users', users);
     app.use('/api/email-verifier', emailVerifier);

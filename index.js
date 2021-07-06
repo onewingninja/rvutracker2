@@ -7,9 +7,13 @@ const app = express();
 const config = import('config');
 const logger = require('./middleware/logger.js');
 //const users = require('./routes/users.js');
-require('./startup/routes.js')(app);
-require('./startup/database.js')();
-require('./startup/config.js')();
+const routesStartup = require('./startup/routes.js');
+const databaseStartup = require('./startup/database.js');
+const configStartup = require('./startup/config.js');
+
+routesStartup(app);
+databaseStartup();
+configStartup();
 
 logger.info(config.get('name'));
 
