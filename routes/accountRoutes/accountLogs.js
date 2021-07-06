@@ -10,8 +10,19 @@ const { validate,  Joi } = import('express-validation');
 const express = import('express');
 const router = express.router();
 
-router.get('/', authentication, (req, res) => {
-    res.redirect('/1').send("Redirecting you to page 1")
+router.get('/:id', authentication, (req, res) => {
+    const user = await User.findById(req.user._id);
+
+    try{
+        const log = await user.logs.findById(req.params._id);
+    }
+    catch(err){
+        res.status(404).send("Could not find a log with that id");
+    }
+});
+
+router.get('/list/', authentication, (req, res) => {
+    res.redirect('./1').send("Redirecting you to page 1")
 });
 
 const getSchema = {
@@ -22,7 +33,7 @@ const getSchema = {
         isIncludingInactive: Joi.boolean()
 })};
 
-router.get('/:id', [authentication, validate(getSchema)], async (req, res) => {
+router.get('/list/:id', [authentication, validate(getSchema)], async (req, res) => {
 
     validationError(schema.validate(req.query));
     
