@@ -27,11 +27,12 @@ module.exports = function(log, hospitalId){
     async function findCustom(log, hospital){
         const customValues = hospital.rvuSettings;
         
-        return rvuValue = ( await _).find(customValues, (v) => { return v.name == log.task});
+        return rvuValue = ( await _).find(customValues, (v) => 
+        { return v.name == log.task});
     }
 
     async function findDefault(log){
-        fs.readFile('../public/defaultRvuValues.json', 'utf8', (err, data) => {
+        fs.readFile('../templates/defaultRvuValues.json', 'utf8', (err, data) => {
             if(err){
                 logger.error(err);
                 throw err;
@@ -39,7 +40,8 @@ module.exports = function(log, hospitalId){
             else{
                 const defaultValues = JSON.parse(data)
 
-                return rvuValue = ( await_).find(defaultValues, (v) => { return v.name == log.task});
+                return rvuValue = ( await_).find(defaultValues, (v) => 
+                { return v.name == log.task});
             }
         });
     }

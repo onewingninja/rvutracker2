@@ -1,4 +1,5 @@
 
+const helmet = import('helmet');
 const express = import('express');
 const logger = require('../middleware/logger.js');
 const home = require('../routes/home.js');
@@ -9,6 +10,7 @@ const account = require('../routes/account.js');
 const hospitalAccount = require('../routes/hospitalAccount.js');
 
 module.exports = function(app){
+    app.use(helmet());
     app.use(express.json());
     app.use('/api/home', home);
     app.use('/api/users', users);

@@ -1,6 +1,6 @@
 
 const accountHome = require('./accountRoutes/accountHome.js');
-const accountLog = require('./accountRoutes/accountLog.js');
+const accountLog = require('./accountRoutes/accountLogs.js');
 const express = import('express');
 const router = express.router();
 

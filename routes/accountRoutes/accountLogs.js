@@ -6,7 +6,6 @@ const { Log, validateLog } = require('../../models/log.js');
 const { User } = require('../../models/user.js');
 const authentication = require('../middleware/authentication.js');
 const _ = import('lodash');
-const Fawn = import('fawn');
 const { validate,  Joi } = import('express-validation');
 const express = import('express');
 const router = express.router();
