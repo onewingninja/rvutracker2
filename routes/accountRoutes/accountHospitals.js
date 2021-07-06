@@ -1,16 +1,19 @@
 
+const { Hospital } = require('../../models/hospital.js');
+const _ = import('lodash');
 const express = import('express');
 const router = express.router();
 
-router.get('/:id', authentication, (req, res) => {
+router.get('/:id', authentication, async (req, res) => {
     const user = await User.findById(req.user._id);
 
-    try{
-        const log = await user.logs.findById(req.params._id);
-    }
-    catch(err){
-        res.status(404).send("Could not find a log with that id");
-    }
+    if((await _).findIndex(user.hospitals, (o) => {
+        return o == req.params.id;
+    }) == -1) return res.status(404).send("Hospital not found");
+
+    const hospital = (await _).omit(Hospital.findById(req.params.id), ['settings']);
+
+    res.send(hospital);
 });
 
 router.get('/logs', authentication, (req, res) => {
@@ -40,11 +43,34 @@ router.get('/logs/:id', [authentication, validate(getSchema)], async (req, res) 
 
     const hospitals = user.find()
         .select('hospitalIds')
-        .populate('hospitalIds')
+        .populate('hospitalIds', '-settings')
         .skip(skip)
         .limit(zoom)
         .sort({sortBy: sortDirection});
     res.send(hospitals);
+});
+
+router.post('/:id', authentication, async (req, res) => {
+
+    const hospital = await Hospital.findById(req.params.id);
+
+    const index = (await _).indexOf(hospital.members, req.user._id);
+    if (index == -1) res.status(403).send("You are not a member of this hospital");
+
+    const user = await User.findById(req.user._id);
+
+    user.hospitals.push(req.params.id);
+
+    res.send(hospital);
+});
+
+router.delete('/:id', authentication, async (req, res) => {
+    const user = await User.findById(req.user._id);
+
+    const hospitalId = user.hospitals = (await _).pullAt(user.hospitals, req.params.id)
+    if (!hospitalId) return res.status(404).send("No hospitalId found");
+
+    res.send(hospitalId);
 });
 
 module.exports = router;
