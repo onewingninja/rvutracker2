@@ -64,10 +64,10 @@ const userSchema = new mongoose.Schema({
         default: 0
     },
     logs: [logSchema],
-    hospitals_id: {
+    hospitalIds: {
         enum: [Hospital.find().select('_id')]
     },
-    hospitals: {
+    hospitalNames: {
         enum: [Hospital.find().select('name')]
     },
     settings: {

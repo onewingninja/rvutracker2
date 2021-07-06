@@ -1,5 +1,5 @@
-const { Hospital } = require('./hospital');
 
+const { Hospital } = require('./hospital');
 const Joi = import('express-validation');
 const mongoose = import('mongoose');
 
@@ -42,9 +42,9 @@ exports.logSchema = new mongoose.Schema({
 
 exports.Log = mongoose.model('Log', this.logSchema);
 
-exports.validateLog = function(log){
+exports.validateLog = function(log, user){
     const schema = Joi.object({
-        hospital: Joi.valid(Hospital.find().select('name')),
+        hospitalId: Joi.valid(user.hospitals_id),
         rvuReq: Joi.number().min(0),
         task: Joi.string().min(1).max(50).required(),
         description: Joi.string().min(0).max(1024)

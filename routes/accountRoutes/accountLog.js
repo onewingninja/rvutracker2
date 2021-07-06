@@ -1,5 +1,6 @@
 
 const logAuth = require('../../middleware/logAuth.js');
+const rvuSetter = require('../../middleware/rvuSetter.js');
 const validationError = require('../../middleware/validationError.js');
 const { Log, validateLog } = require('../../models/log.js');
 const { User } = require('../../models/user.js');
@@ -48,9 +49,10 @@ router.get('/:id', [authentication, validate(getSchema)], async (req, res) => {
 });
 
 router.post('/', authentication, async (req, res) => {
-    validationError(validateLog(req.body));
 
     const user = await User.findById(req.user._id);
+
+    validationError(validateLog(req.body, user));
 
     validationError(logAuth(req.body.hospital, user));
 
@@ -61,9 +63,10 @@ router.post('/', authentication, async (req, res) => {
 });
 
 router.put('/:id', authentication, async (req, res) => {
-    validationError(validateLog(req.body));
 
     const user = await User.findById(req.user._id);
+
+    validationError(validateLog(req.body, user));
 
     const log = await user.logs.findById(req.params.id);
     if (!log) res.status(404).send("Log not found");
@@ -75,21 +78,16 @@ router.put('/:id', authentication, async (req, res) => {
         .pick(req.body, ['rvuReq', 'task', 'description']));
     updatedLog.time = originalDate;
 
-    
     try{
-        new Fawn.Task()
-        .then(() => {
-            user.logs.push(updatedLog);
-        })
-        .then(() => {
-            
-        })
-        .save(user)
-        .run();
+        rvuSetter(log, req.body.hospitalId);
     }
-    catch(ex){
-        next(ex);
+    catch(err){
+        next(err)
     }
+
+    user.logs.push(updatedLog);
+
+    user.save();
     
     res.send(updatedLog);
 });
